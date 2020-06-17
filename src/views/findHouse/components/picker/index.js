@@ -28,10 +28,7 @@ export default class Index extends Component {
         return (
             <div className={styles.pickerComponent}>
                 {/*前三个选择器 */}
-                <div className={styles.pickerBac}>
-                    {this.showPicker()}
-                    {this.cancelAndSubmit()}
-                </div>
+                {this.showPicker()}
                 {/* 筛选框*/}
                 {this.filtrate()}
             </div>
@@ -45,11 +42,21 @@ export default class Index extends Component {
         let mySelectValue = selectValues[currentOpenType]
         if (toData) {
             if (currentOpenType !== "area" && currentOpenType !== "filtrate") {
-                return <PickerView data={toData} cols={1} value={mySelectValue}
-                    onChange={this.pickerChange} />
+                return (
+                    <>
+                      <PickerView data={toData} cols={1} value={mySelectValue}
+                      onChange={this.pickerChange} />
+                      {this.cancelAndSubmit()}
+                    </>
+                )
             } else if (currentOpenType === "area") {
-                return <PickerView data={toData} value={mySelectValue}
+                return (
+                    <>
+                    <PickerView data={toData} value={mySelectValue}
                     onChange={this.pickerChange} />
+                    {this.cancelAndSubmit()}
+                    </>
+                )
             }
         }
     }

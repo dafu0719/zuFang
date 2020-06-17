@@ -17,7 +17,9 @@ export default class FindHouse extends Component {
         this.state = {
             houseList: [],   //房屋列表
             isMyCity: "",
+            isMyCityValue:'',
             allCount:'',
+            isFirst:true,   //是不是第一次渲染房屋数据
             titList: [
                 { title: "区域", type: "area" },
                 { title: "方式", type: "mode" },
@@ -37,7 +39,8 @@ export default class FindHouse extends Component {
     }
     //页面一打开就调用
     componentDidMount() {
-        this.getCondition(1,20)
+        this.getCondition()
+        this.getHouselist(1,20)
         this.tabNeedLight()
         this.isGetCurrentCity()
     }
@@ -48,13 +51,16 @@ export default class FindHouse extends Component {
             <div className={styles.findHouse} style={{ height: "100%" }}>
                 {/* 顶部搜索栏 */}
                 <SearchBar rightColor={true} myCity={this.state.isMyCity}></SearchBar>
+                {/* 前三个选择器的遮罩 */}
                 {currentOpenType !== '' && currentOpenType !== 'filtrate' &&
                     <div className={styles.pickerMask} onClick={this.clickMask}></div>}
                 {/* 将标签栏和弹出框统一放到一个盒子里,因为他们两个都在遮罩层的上一层 */}
-                <div className={styles.pickerMaskUp}>
-                    {this.myTabBar()}
-                    {this.showPicker()}
-                </div>
+                <DrawingPin>
+                   <div className={styles.pickerMaskUp}>
+                       {this.myTabBar()}
+                       {this.showPicker()}
+                   </div>
+                </DrawingPin>
                 {/* 渲染列表 */}
                 {this.renderLisst()}
 
@@ -68,16 +74,14 @@ export default class FindHouse extends Component {
     }
     //加载更多
     loadMoreRows = ({ startIndex, stopIndex }) => {
-            return new Promise((resolve, reject) => {
-                this.getCondition(startIndex,stopIndex)
-                console.log("加载更多")
+        return new Promise((resolve, reject) => {
+                this.getHouselist(startIndex,stopIndex)
                 resolve()
-            })
-        
+        })
     }
     //渲染列表数据
     renderLisst = () =>{
-      let { currentOpenType, houseList, allCount } = this.state   
+      let { houseList, allCount } = this.state   
       if(allCount){
         return (
             <div className={styles.houseList}>
@@ -85,8 +89,8 @@ export default class FindHouse extends Component {
             isRowLoaded={this.isRowLoaded}   //判断每一行是不是加载完成
             loadMoreRows={this.loadMoreRows}   //加载更多
             rowCount={allCount}             //总行数
-            // minimumBatchSize={20}           //每次加载的最小行数
-            >{({ onRowsRendered }) => (
+            minimumBatchSize={20}           //每次加载的最小行数
+            >{({ onRowsRendered, registerChild }) => (
                 <WindowScroller>{({ isScrolling, scrollTop }) => (    //连整个窗口一起滚动
                     <AutoSizer>
                         {({ height, width }) => (
@@ -95,13 +99,12 @@ export default class FindHouse extends Component {
                                 autoHeight
                                 isScrolling={isScrolling}   //得到表面列表正在滚动
                                 scrollTop={scrollTop}      //得到滚动到页面的距离,这个不打开页面下边会多出一截
-                                //  ref={this.listDom}    //用来获取DOM,理解是得到动态生成出来的没一截数据的DOM
+                                ref={registerChild}    //用来获取DOM,理解是得到动态生成出来的没一截数据的DOM
                                 width={width}     //整个list组件的宽度
                                 height={height}   //整个list组件的高度,高度很重要,如果为0则不渲染每一行
                                 rowCount={allCount}     //总共多少条数据.数据总长度
-                                rowHeight={99}   //每一条数据高度,可以写死也可以写函数,写函数会自动获取到index对象
+                                rowHeight={110}   //每一条数据高度,可以写死也可以写函数,写函数会自动获取到index对象
                                 rowRenderer={this.rowRenderer}   //渲染的每一行数据,大括号里边放函数
-                                scrollToAlignment="start"   //设置开始就是,每一行对齐总是对齐到列表的顶部
                             />
                         )}
     
@@ -198,7 +201,6 @@ export default class FindHouse extends Component {
     myTabBar() {
         let { titList, titleStatus } = this.state
         return (
-            <DrawingPin>
                 <div className={styles.tabBar}>
                     {
                         titList.map((item, index) => {
@@ -215,26 +217,46 @@ export default class FindHouse extends Component {
                         })
                     }
                 </div>
-            </DrawingPin>
         )
     }
-    //获取房屋条件
-     async getCondition(start,end) {
-        Toast.loading('加载中', 30)
-        let { value } = await getCurrentCity()
-        let res = await condition(value)
-        let res2 = await findHouse({ 
-            cityId: value,
-            start,
-            end
-        })
-        Toast.hide()
+    //获取房屋列表数据
+     async getCondition() {
+        let { value:isMyCityValue } = await getCurrentCity()
+        let res = await condition(isMyCityValue)
         this.setState({
             allFiltrateData: res.body,
-            houseList: [...this.state.houseList, ...res2.body.list],
-            allCount: res2.body.count,
+            isMyCityValue
         })
-
+    }
+    //获取房屋列表
+    async getHouselist(start,end) {
+        if(!this.state.isMyCityValue){
+            Toast.loading('加载中', 0)
+            let { value:isMyCityValue } = await getCurrentCity()
+            let res2 = await findHouse({ 
+                cityId: isMyCityValue,
+                start,
+                end
+            })
+            Toast.hide()
+            this.setState({
+                houseList: res2.body.list,
+                allCount: res2.body.count
+            })
+        }else {
+            console.log("再次获取数据中")
+            let res2 = await findHouse({ 
+                cityId: this.state.isMyCityValue,
+                start,
+                end
+            })
+            this.setState({
+                houseList: [...this.state.houseList, ...res2.body.list]
+            })
+            
+        }
+        
+        
     }
     // 获取城市
     async isGetCurrentCity() {
