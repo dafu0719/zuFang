@@ -253,7 +253,8 @@ export default class FindHouse extends Component {
             this.setState({
                 houseList: [...this.state.houseList, ...res2.body.list]
             })
-            
+            let top  = document.documentElement.scrollTop
+            window.scrollTo(0,top + 1)
         }
         
         
