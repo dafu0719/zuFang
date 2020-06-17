@@ -37,7 +37,7 @@ export default class FindHouse extends Component {
     }
     //页面一打开就调用
     componentDidMount() {
-        this.getCondition()
+        this.getCondition(1,20)
         this.tabNeedLight()
         this.isGetCurrentCity()
     }
@@ -65,14 +65,15 @@ export default class FindHouse extends Component {
     //判断某一行是不是加载完毕
     isRowLoaded = ({ index }) => {
         return !!this.state.houseList[index]
-        // return !!list[index];
     }
     //加载更多
-    loadMoreRows({ startIndex, stopIndex }) {
-        return new Promise((resolve, reject) => {
-            console.log("我成功了")
-            resolve()
-        })
+    loadMoreRows = ({ startIndex, stopIndex }) => {
+            return new Promise((resolve, reject) => {
+                this.getCondition(startIndex,stopIndex)
+                console.log("加载更多")
+                resolve()
+            })
+        
     }
     //渲染列表数据
     renderLisst = () =>{
@@ -80,7 +81,11 @@ export default class FindHouse extends Component {
       if(allCount){
         return (
             <div className={styles.houseList}>
-            <InfiniteLoader isRowLoaded={this.isRowLoaded} loadMoreRows={this.loadMoreRows} rowCount={allCount} minimumBatchSize={20}
+            <InfiniteLoader 
+            isRowLoaded={this.isRowLoaded}   //判断每一行是不是加载完成
+            loadMoreRows={this.loadMoreRows}   //加载更多
+            rowCount={allCount}             //总行数
+            // minimumBatchSize={20}           //每次加载的最小行数
             >{({ onRowsRendered }) => (
                 <WindowScroller>{({ isScrolling, scrollTop }) => (    //连整个窗口一起滚动
                     <AutoSizer>
@@ -93,7 +98,7 @@ export default class FindHouse extends Component {
                                 //  ref={this.listDom}    //用来获取DOM,理解是得到动态生成出来的没一截数据的DOM
                                 width={width}     //整个list组件的宽度
                                 height={height}   //整个list组件的高度,高度很重要,如果为0则不渲染每一行
-                                rowCount={houseList.length}     //总共多少条数据.数据总长度
+                                rowCount={allCount}     //总共多少条数据.数据总长度
                                 rowHeight={99}   //每一条数据高度,可以写死也可以写函数,写函数会自动获取到index对象
                                 rowRenderer={this.rowRenderer}   //渲染的每一行数据,大括号里边放函数
                                 scrollToAlignment="start"   //设置开始就是,每一行对齐总是对齐到列表的顶部
@@ -118,11 +123,23 @@ export default class FindHouse extends Component {
     }) => {
         let { houseList } = this.state
         let houseItem = houseList[index]
-        return (
-            <div key={key} style={style}>
-                <HouseItem needItem={houseItem}></HouseItem>
-            </div>
-        );
+        //这里要加一个条件判断,就是当下一条数据还没获取到阿斗时候不要生成子组件,不然直接空值传过去了,瞬间报错
+        if(houseItem){
+            return (
+                <div key={key} style={style}>
+                    <HouseItem needItem={houseItem}></HouseItem>
+                </div>
+            );
+        }else if(!houseItem){
+            //如果数据还没获取到就显示色块,骨架屏
+            return  (
+                <div key={key} style={style}>
+                    <div className={styles.isLoading}></div>
+                </div>
+            );
+      
+        }
+       
     }
     //点击遮罩层
     clickMask = () => {
@@ -202,18 +219,22 @@ export default class FindHouse extends Component {
         )
     }
     //获取房屋条件
-    async getCondition() {
+     async getCondition(start,end) {
         Toast.loading('加载中', 30)
         let { value } = await getCurrentCity()
         let res = await condition(value)
-        let res2 = await findHouse({ cityId: value })
-        this.setState({
-            allFiltrateData: res.body,
-            houseList: res2.body.list,
-            allCount: res2.body.count
+        let res2 = await findHouse({ 
+            cityId: value,
+            start,
+            end
         })
         Toast.hide()
-        Toast.info(`查询到${res2.body.count}条数据`, 1)
+        this.setState({
+            allFiltrateData: res.body,
+            houseList: [...this.state.houseList, ...res2.body.list],
+            allCount: res2.body.count,
+        })
+
     }
     // 获取城市
     async isGetCurrentCity() {

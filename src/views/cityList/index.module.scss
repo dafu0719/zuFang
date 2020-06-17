@@ -1,8 +1,13 @@
 .cittList{
   padding-left: 8px;
   padding-right: 22px;
-  background-color: #ffffff;
+//   background-color: #ffffff;
+  position: absolute;
   height: 100%;
+  width: 100%;
+  top: 45px;
+  bottom: 0px;
+  left: 0px;
 }
 .cittListItem{
     border-bottom: 1px solid #f6f6f6;
@@ -42,3 +47,5 @@
     color: #ffffff;
     background-color: #01b573;
 }
+
+

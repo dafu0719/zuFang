@@ -10,14 +10,12 @@ export default class DrawingPin extends Component {
     }
     //页面一打开就调用
     componentDidMount(){
-        window.addEventListener('scroll',() =>{
-           let top = document.documentElement.scrollTop
-           if(top > 70){
-            this.childrenDom.current.classList.add(styles.children)
-           }else{
-            this.childrenDom.current.classList.remove(styles.children)
-           }
-        })
+        window.addEventListener('scroll', this.scroll)
+    }
+    //销毁阶段
+    componentWillUnmount(){
+        //注意:销毁阶段移除事件监听,不然其他组件会出现bug报错
+        window.removeEventListener('scroll',this.scroll)
     }
     //写html,渲染数据
     render() {
@@ -26,6 +24,14 @@ export default class DrawingPin extends Component {
             <div ref={this.childrenDom}> {this.props.children}</div>
             </>
         )
+    }
+    scroll = () =>{
+        let top = document.documentElement.scrollTop
+           if(top > 70){
+            this.childrenDom.current.classList.add(styles.children)
+           }else{
+            this.childrenDom.current.classList.remove(styles.children)
+           }
     }
 }
 

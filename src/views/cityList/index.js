@@ -32,7 +32,7 @@ export default class CityList extends Component {
             <div style={{height:"100%"}}>
                 <MyNavBar>城市列表</MyNavBar>
                 {/* 左边城市列表 */}
-                <div className={styles.cittList} style={{ marginTop: "45px",marginBottom:"300px",height:"100%" }}>
+                <div className={styles.cittList}>
                     <AutoSizer>
                         {({ height, width }) => (
                             <List

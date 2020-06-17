@@ -69,7 +69,7 @@ function condition(id) {
     })
 }
 //根据条件获取房源数据
-function findHouse({cityId,area,subway,rentType,price,more,roomType,oriented,characteristic,floor}) {
+function findHouse({cityId,area,subway,rentType,price,more,roomType,oriented,characteristic,floor,start,end}) {
     return myRequest({
         url: '/houses',
         method: 'get',
@@ -84,8 +84,8 @@ function findHouse({cityId,area,subway,rentType,price,more,roomType,oriented,cha
             oriented:oriented || null,    //朝向
             characteristic:characteristic || null,  //标签
             floor:floor || null,          //楼层
-            start:1,          //开始页
-            end:20              //结束页
+            start:start,          //开始页
+            end:end              //结束页
          }  
     })
 }
