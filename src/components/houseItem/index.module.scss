@@ -1,0 +1,66 @@
+
+//弹出框列表
+.houseListItem{
+   padding: 10px 10px;
+    display: flex;
+    align-items: center;
+    border-bottom: 2px solid #f4f4f4;
+    background-color: #ffffff;
+    justify-content: space-between;
+}
+.houseFont{
+    width: 70%;
+}
+.houseFont p{
+   margin-bottom: 6px;
+}
+.houseFont div{
+    margin-bottom: 6px;
+ }
+.secondP{
+    color: #bfbfbf;
+    font-size: 12px;
+}
+.thirdP{
+    font-size: 12px;
+    margin: 9px 0;
+}
+.thirdP span{
+    margin-right: 8px;
+    border-radius: 2px 0;
+}
+.thirdPspan1{
+    color: #53bac4;
+    padding: 2px 4px;
+    background-color: #e8f4fb;
+}
+.thirdPspan2{
+    color: #5cc79b;
+    padding: 2px 4px;
+    background-color: #dcf6ea;
+}
+.thirdPspan3{
+    color: #71b1f6;
+    padding: 2px 4px;
+    background-color: #e0eff7;
+}
+.thirdPspan4{
+    color: #70d4e0;
+    padding: 2px 4px;
+    background-color: #e1f1f2;
+}
+.forthP{
+    color: #f37e6e;
+    font-size: 10px;
+}
+.inForthPspan{
+    color: #ef644e;
+    font-size: 12px;
+    font-weight: bold;
+}
+
+
+
+
+
+

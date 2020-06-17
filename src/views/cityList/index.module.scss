@@ -1,0 +1,44 @@
+.cittList{
+  padding-left: 8px;
+  padding-right: 22px;
+  background-color: #ffffff;
+  height: 100%;
+}
+.cittListItem{
+    border-bottom: 1px solid #f6f6f6;
+}
+.citytyTitle{
+    height: 34px;
+    line-height: 34px;
+    color: #9e9e9e;
+}
+.citytyConyentItem{
+    height: 34px;
+    line-height: 34px;
+    color: #4e4e4e;
+}
+.rightName{
+    position: fixed;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    right: 10px;
+    top: 60px;
+}
+.rightSpan{
+    margin-bottom: 14px;
+}
+.rightNameI{
+     width: 16px;
+     height: 16px;
+     border-radius: 14px;
+     font-size: 10px;
+     text-align: center;
+     line-height: 16px;
+     margin-bottom: 12px;
+}
+.activeRightNameI{
+    // background-color:#23a777;
+    color: #ffffff;
+    background-color: #01b573;
+}

@@ -1,0 +1,63 @@
+.findHouse{
+   padding-top: 70px;
+   position: relative;
+}
+.tabBar{
+    height: 36px;
+    background-color: #ffffff;
+    display: flex;
+    justify-content: space-between;
+    border-bottom: 1px solid #f1f1f1;
+}
+.tabBarItem{
+    width: 25%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 16px;
+}
+.triangle{
+    width: 0;
+    height: 0;
+    border-top: 6px solid #b4b4b4;
+    border-left: 4px solid transparent;
+    border-right: 4px solid transparent;
+    margin: 0 6px;
+}
+// 遮罩
+.pickerMask{
+    height: 100%;
+    background-color: rgba(0,0,0,0.9);
+    opacity: 0.5;
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 10;
+    width: 100%;
+    // visibility: visible;
+    // opacity: 1;
+    // transition: 0.1s;
+}
+// .hidePickerMask{
+//     transition: 0.1s;
+//     visibility: hide;
+//     opacity: 0;
+// }
+.pickerMaskUp{
+    position: absolute;
+    z-index: 99;
+    width: 100%;
+}
+.houseList{
+    background-color:#ffffff ;
+    position: absolute;
+    width: 100%;
+    top:  106px;
+    bottom: 48px;
+    left: 0;
+}
+:global{
+    .ReactVirtualized__List{
+        padding-bottom: 50px;
+    }
+}

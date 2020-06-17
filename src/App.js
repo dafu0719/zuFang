@@ -1,25 +1,29 @@
 import React from 'react';
-import logo from './logo.svg';
-import './App.css';
+import { BrowserRouter  as Router, Route, Switch, Redirect} from "react-router-dom";
+
+import "./App.css" // 导入全局样式
+import "./assets/fonts/iconfont.css"  // 导入可以全局引用的字体图标样式
+
+// 导入子组件
+import Home from "./views/home"
+import CityList from "./views/cityList"
+import MapFindCity from "./views/mapFindCity"
+import HouseDetail from "./views/houseDetail"
 
 function App() {
   return (
-    <div className="App">
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Edit <code>src/App.js</code> and save to reload.
-        </p>
-        <a
-          className="App-link"
-          href="https://reactjs.org"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          Learn React
-        </a>
-      </header>
-    </div>
+       <Router>
+         <div id="app">
+           <Switch>
+             <Route path="/home" component={Home}/>
+             <Route path="/cityList" component={CityList}/>
+             <Route path="/mapFindCity" component={MapFindCity}/>
+             <Route path="/houseDetail" component={HouseDetail}/>
+             {/*路由重定向*/}
+             <Redirect exact from="/" to="/home"/>    
+           </Switch>
+         </div>
+       </Router>
   );
 }
 

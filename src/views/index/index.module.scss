@@ -1,0 +1,66 @@
+
+.tabBtn{
+    height: 88px;
+    background-color:#ffffff;
+    display: flex;
+}
+.tabBtnItem{
+    width: 33.333%;
+    height: 100%;
+    text-align: center;
+}
+.tabBtnItemTop{
+    height: 62px;
+    width:100%; 
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.tabBtnImg{
+    width:50%;
+    height: 80%;
+}
+.zuFangXiaoZuContent{
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    padding: 0 12px;
+}
+.zuFangXiaoZuItem{
+    width: 48%;
+    height: 68px;
+    background-color:#ffffff;
+    margin-bottom: 4%;
+    display: flex;
+    justify-content: space-between;
+    padding-left: 26px;
+    padding-right: 12px;
+    align-items: center;
+    color: #4f4f4f;
+}
+.newAdvisory{
+    background-color: #ffffff;
+    margin-top: 10px;
+    margin-bottom: 145px;
+}
+.newAdvisoryContent{
+    padding: 0 16px;
+}
+.newAdvisoryItem{
+    height: 94px;
+    border-bottom: 1px solid #f4f4f4;
+    padding-bottom: 12px;
+    display: flex;
+}
+.newAdvisoryItemRight{
+    flex: 1;
+    padding: 14px 8px 2px 12px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+.newAdvisoryItemRightBottom{
+    display: flex;
+    justify-content: space-between;
+    color:#8d8d8d;
+}
