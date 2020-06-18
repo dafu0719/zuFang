@@ -1,6 +1,7 @@
 import React, { Component } from 'react'
 import { PickerView } from 'antd-mobile';
 import styles from './index.module.scss'
+import store from '../../../../store'
 
 export default class Index extends Component {
     //显示在视图层的初始数据
@@ -128,6 +129,8 @@ export default class Index extends Component {
         let { currentOpenType: type } = this.props
         this.setState({ selectValues: { ...selectValues, [type]: val } }, () => {
             window.localStorage.setItem('selectValues', JSON.stringify(this.state.selectValues))
+            store.dispatch({type:'SETVALUE', val:this.state.selectValues})
+            //  console.log( store.getState().selectValues,"我是外变的log")
         })
     }
     //点击取消

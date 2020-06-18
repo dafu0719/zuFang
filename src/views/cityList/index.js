@@ -25,7 +25,7 @@ export default class CityList extends Component {
     }
     //写html,渲染数据
     render() {
-        let { myCitFirstLetter } = this.state
+        let { myCitFirstLetter,activeIndex } = this.state
         // let windowHeight = window.innerHeight
         // let windowWidth = window.innerWidth
         return (
@@ -44,6 +44,8 @@ export default class CityList extends Component {
                                 rowRenderer={this.rowRenderer}   //渲染的每一行数据,大括号里边放函数
                                 onRowsRendered={this.onRowsRenderedIndex}   //每次渲染的下标
                                 scrollToAlignment="start"
+                                scrollToIndex={activeIndex}
+                                // scrollTop={100}   //这个是固定到指定个滚动条高度,手动高度一边然后会自动回弹回去
                             />
                         )}
                     </AutoSizer>
@@ -184,7 +186,9 @@ export default class CityList extends Component {
     }
     //获取滚动位置
     clickToScorll = (index) => {
-    console.log(index)
+       this.setState({
+        activeIndex:index
+       })
     }
     //点击城市名称
     clickGoHome = (item) =>{
