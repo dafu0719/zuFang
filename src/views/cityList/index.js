@@ -43,7 +43,6 @@ export default class CityList extends Component {
                                 rowHeight={this.rowHeight}//每一条数据高度,可以写死也可以写函数,写函数会自动获取到index索引
                                 rowRenderer={this.rowRenderer}   //渲染的每一行数据,大括号里边放函数
                                 onRowsRendered={this.onRowsRenderedIndex}   //每次渲染的下标
-                                scrollToIndex={5}
                                 scrollToAlignment="start"
                             />
                         )}
@@ -146,7 +145,7 @@ export default class CityList extends Component {
                 {newFirstRight.map((item, index) => {
                     //因为右边关键字要简写,所以要用三元表达式处理一下,不用一开始的时候写 activeIndex
                     return (
-                        <div className={`${styles.rightNameI} ${activeIndex === index? styles.activeRightNameI : null}`} 
+                        <div className={`${styles.rightNameI} ${activeIndex === index && styles.activeRightNameI}`} 
                         onClick={() => this.clickToScorll(index)}
                         key={item}>
                             <span className={styles.rightSpan} key={item}>{this.doNewFirstRight(item)}</span>
@@ -156,7 +155,7 @@ export default class CityList extends Component {
             </div>
         )
     }
-    //获取行高
+    //获取行高,插件会自动返回一个index对象,值就是下标
     rowHeight = ({ index }) => {
         let { myCitFirstLetter, myCityList } = this.state
         let cityIndex = myCitFirstLetter[index]

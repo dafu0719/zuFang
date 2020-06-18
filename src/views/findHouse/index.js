@@ -74,12 +74,17 @@ export default class FindHouse extends Component {
     }
     //加载更多
     loadMoreRows = ({ startIndex, stopIndex }) => {
-        return new Promise((resolve, reject) => {
+        let {preStartIndex} = this.state
+        if(startIndex !== preStartIndex){
+            console.log(startIndex, stopIndex)
+            return new Promise((resolve, reject) => {
                 this.getHouselist(startIndex,stopIndex)
+                this.setState({preStartIndex:startIndex})
                 resolve()
-        })
+            })
+        }
     }
-    //渲染列表数据
+    // 插件渲染列表数据
     renderLisst = () =>{
       let { houseList, allCount } = this.state   
       if(allCount){
@@ -116,7 +121,7 @@ export default class FindHouse extends Component {
           )
       }
     }
-    // 渲染的每一行数据,注意:是每一行
+    // 插件渲染的每一行数据,注意:是每一行
     rowRenderer = ({
         key, //行数组中唯一的键
         index, //集合中的行索引
@@ -157,17 +162,17 @@ export default class FindHouse extends Component {
             currentOpenType: type,
             titleStatus: { ...titleStatus, [type]: true }
         }, () => {
-            let typeList = ["area", "mode", "price"]
-            let selectValues = JSON.parse(window.localStorage.getItem("selectValues"))
-            //使用排他思想看其他两个有没点新数据
-            let otherArr = typeList.filter((item, index) => { return item !== type })
-            otherArr.forEach((item, index) => {
-                if ((selectValues[item])[0] === 'null') {
-                    // this.setState({
-                    //     titleStatus:{...titleStatus,[item]:false}
-                    // })
-                }
-            });
+            // let typeList = ["area", "mode", "price"]
+            // let selectValues = JSON.parse(window.localStorage.getItem("selectValues"))
+            // //使用排他思想看其他两个有没点新数据
+            // let otherArr = typeList.filter((item, index) => { return item !== type })
+            // otherArr.forEach((item, index) => {
+            //     if ((selectValues[item])[0] === 'null') {
+            //         // this.setState({
+            //         //     titleStatus:{...titleStatus,[item]:false}
+            //         // })
+            //     }
+            // });
         })
     }
     //通过当前点开的标签,生成相应的弹出框,同时传相应的数据
@@ -219,7 +224,7 @@ export default class FindHouse extends Component {
                 </div>
         )
     }
-    //获取房屋列表数据
+    //获取房屋查询条件
      async getCondition() {
         let { value:isMyCityValue } = await getCurrentCity()
         let res = await condition(isMyCityValue)
@@ -255,6 +260,8 @@ export default class FindHouse extends Component {
             })
             let top  = document.documentElement.scrollTop
             window.scrollTo(0,top + 1)
+            //这个是平滑滚动,这里用了反而效果不好
+            // window.scrollTo({ top: top + 1, left: 0, behavior: 'smooth' }) 
         }
         
         
@@ -328,3 +335,4 @@ export default class FindHouse extends Component {
         this.setState({ titleStatus })
     }
 }
+
